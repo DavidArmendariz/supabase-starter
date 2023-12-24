@@ -1,19 +1,16 @@
 "use client";
 
-import {
-  User,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import type { Database } from "@/lib/database.types";
+import { useSupabaseForClientComponents } from "@/app-hooks/supabase";
+import { User } from "@supabase/supabase-js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+  const supabase = useSupabaseForClientComponents();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 

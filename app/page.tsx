@@ -1,14 +1,9 @@
 import Image from "next/image";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database } from "@/lib/database.types";
 import Link from "next/link";
+import { useSupabaseForServerComponents } from "@/app-hooks/supabase";
 
 export default async function Home() {
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient<Database>({
-    cookies: () => cookieStore,
-  });
+  const supabase = useSupabaseForServerComponents();
 
   const {
     data: { user },
