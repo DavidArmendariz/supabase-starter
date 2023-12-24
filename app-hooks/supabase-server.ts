@@ -34,7 +34,3 @@ export const useSupabaseForRouteHandlers = () => {
     },
   });
 };
-
-export const useSupabaseForClientComponents = () => {
-  return createBrowserClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY);
-};

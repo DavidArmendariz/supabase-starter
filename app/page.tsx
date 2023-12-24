@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useSupabaseForServerComponents } from "@/app-hooks/supabase";
+import { useSupabaseForServerComponents } from "@/app-hooks/supabase-server";
 
 export default async function Home() {
   const supabase = useSupabaseForServerComponents();

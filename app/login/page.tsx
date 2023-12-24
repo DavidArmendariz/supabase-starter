@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useSupabaseForClientComponents } from "@/app-hooks/supabase";
 import { User } from "@supabase/supabase-js";
+import { useSupabaseForClientComponents } from "@/app-hooks/supabase-client";
 
 export default function Login() {
   const [email, setEmail] = useState("");
