@@ -1,7 +1,12 @@
 "use client";
 
 import { Database } from "@/lib/database.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { redirect } from "next/navigation";
+
+import {
+  Session,
+  createClientComponentClient,
+} from "@supabase/auth-helpers-nextjs";
 import { Auth as SupabaseAuth } from "@supabase/auth-ui-react";
 import {
   // Import predefined theme
@@ -11,9 +16,21 @@ import { useEffect, useState } from "react";
 
 export default function Auth() {
   const supabase = createClientComponentClient<Database>();
-
-  // State to store the dark mode status
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsLoading(false);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setIsLoading(false);
+    });
+  }, [supabase.auth]);
 
   useEffect(() => {
     // Function to check for dark mode
@@ -40,15 +57,23 @@ export default function Auth() {
       darkModeMediaQuery.removeEventListener("change", darkModeChangeHandler);
   }, []);
 
-  return (
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (session) {
+    redirect("/");
+  }
+
+  return isDarkMode ? (
     <main className="h-screen flex flex-col items-center justify-center">
       <SupabaseAuth
         appearance={{
           theme: ThemeSupa,
         }}
         supabaseClient={supabase}
-        theme={isDarkMode ? "dark" : "light"}
+        theme={isDarkMode ? "dark" : "default"}
       />
     </main>
-  );
+  ) : null;
 }
