@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { User } from "@supabase/supabase-js";
-import { useSupabaseForClientComponents } from "@/app-hooks/supabase-client";
+import { Database } from "@/lib/database.types";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const supabase = useSupabaseForClientComponents();
+  const supabase = createClientComponentClient<Database>();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 

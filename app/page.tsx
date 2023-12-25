@@ -1,9 +1,14 @@
+import { Database } from "@/lib/database.types";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-import { useSupabaseForServerComponents } from "@/app-hooks/supabase-server";
 
 export default async function Home() {
-  const supabase = useSupabaseForServerComponents();
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
 
   const {
     data: { user },
