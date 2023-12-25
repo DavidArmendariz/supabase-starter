@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Loading from "@/components/Loading";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -27,7 +28,7 @@ export default function Login() {
   }, [supabase.auth]);
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
 
   const handleSignUp = async () => {

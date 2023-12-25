@@ -13,12 +13,13 @@ import {
   ThemeSupa,
 } from "@supabase/auth-ui-shared";
 import { useEffect, useState } from "react";
+import Loading from "@/components/Loading";
 
 export default function Auth() {
   const supabase = createClientComponentClient<Database>();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -58,21 +59,21 @@ export default function Auth() {
   }, []);
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
 
   if (session) {
     redirect("/");
   }
 
-  return isDarkMode ? (
+  return isDarkMode !== null ? (
     <main className="h-screen flex flex-col items-center justify-center">
       <SupabaseAuth
         appearance={{
           theme: ThemeSupa,
         }}
         supabaseClient={supabase}
-        theme={isDarkMode ? "dark" : "default"}
+        theme={isDarkMode ? "dark" : "light"}
       />
     </main>
   ) : null;
